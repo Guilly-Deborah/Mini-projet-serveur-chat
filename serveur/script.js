@@ -43,6 +43,15 @@ client.hset('users', 'user1', {
     username: "test"
 })
 
+// creation of replicatSet
+MongoClient.connect("mongodb://localhost/Tchat?replicaSet=myRepl", function(error , client) {
+    if (error) return error;
+    myRepl.add("local:3001");
+    myRepl.add("local:3002");
+    myRepl.addArb("local:3003");
+    client.close();
+});
+
 io.on('connection', socket => {
 
     socket.on('add user', username => {
