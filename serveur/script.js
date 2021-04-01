@@ -41,7 +41,7 @@ let client=redis.createClient({
 client.hset('users', 'user1', {
     id: 0,
     username: "test"
-})
+});
 
 // creation of replicatSet
 MongoClient.connect("mongodb://localhost/Tchat?replicaSet=myRepl", function(error , client) {
@@ -188,7 +188,7 @@ io.on('connection', socket => {
             var db = client.db('Tchat');
             var liste_message = db.collection('messages');
             liste_message.insertOne(message);
-            console.log("messages list :")
+            console.log("messages list :");
             liste_message.find();
             client.close();
         });
@@ -214,7 +214,7 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
 
         //deletion of the user from the hash of connected users
-        client.hdel('users','user'.concat(idUser))
+        client.hdel('users','user'.concat(idUser));
 
         console.log('deconnection');
         numUsers--;
