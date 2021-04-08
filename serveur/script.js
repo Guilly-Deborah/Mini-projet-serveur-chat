@@ -32,12 +32,15 @@ let messages = {'1':[]};
          "user_id" : 1, //if 0 is server send message type
           }]
 }*/
-//Creation of Redis client
+
+const redis = require ('redis');
+
+//Creation of the Redis client
 let client=redis.createClient({
     port:3001,
     host: '10.188.1.71'
 });
-//initialization of the hash containing the users with user test
+//Initialization of the hash containing the users with a test user
 client.hset('users', 'user1', {
     id: 0,
     username: "test"
@@ -188,7 +191,7 @@ io.on('connection', socket => {
             var db = client.db('Tchat');
             var liste_message = db.collection('messages');
             liste_message.insertOne(message);
-            console.log("messages list :");
+            console.log("messages list :")
             liste_message.find();
             client.close();
         });
@@ -216,11 +219,13 @@ io.on('connection', socket => {
         //deletion of the user from the hash of connected users
         client.hdel('users','user'.concat(idUser));
 
+        console.log("List of logged in users : ");
+        client.hgetall('users');
+
         console.log('deconnection');
         numUsers--;
 
-        console.log("List of logged in users : ");
-        client.hgetall('users');
+
 
     });
 });
